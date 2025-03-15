@@ -1,6 +1,6 @@
 # Jira Test Results Notification
 
-> Send Jira issue with test results from popular testing frameworks
+> Create a Jira issue with test results from popular testing frameworks
 
 A Jira test reporting tool that supports all major testing frameworks.
 Generate, publish and alert your team with detailed test results, including
