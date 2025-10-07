@@ -1,4 +1,4 @@
-import { type CtrfReport } from './types/ctrf'
+import { Report } from 'ctrf'
 import { type AdfDocument } from './client'
 import { type Options } from './types/reporter'
 
@@ -357,7 +357,7 @@ const createCodeBlock = (text: string, language: string = 'text') => ({
  * Builds a dynamic ADF description using the CTRF report data
  */
 export const buildDescription = (
-  ctrf: CtrfReport,
+  ctrf: Report,
   options?: Options
 ): AdfDocument => {
   const { results } = ctrf

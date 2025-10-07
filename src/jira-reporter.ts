@@ -3,11 +3,11 @@ import {
   formatResultsMessage,
 } from './message-formatter'
 import { type Options } from './types/reporter'
-import { type CtrfReport } from './types/ctrf'
+import { type Report } from 'ctrf'
 import { postJiraIssue } from './client'
 
 export async function postResultsToJira(
-  report: CtrfReport,
+  report: Report,
   options: Options = {},
   logs: boolean = false
 ): Promise<void> {
@@ -40,7 +40,7 @@ export async function postResultsToJira(
 }
 
 export async function postFlakyTestsToJira(
-  report: CtrfReport,
+  report: Report,
   options: Options = {},
   logs: boolean = false
 ): Promise<void> {
