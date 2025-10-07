@@ -420,7 +420,7 @@ export const buildDescription = (
         { type: 'text', text: 'Build: ' },
         {
           type: 'text',
-          text: 'CTRF Build #1',
+          text: environment.buildName +  ' #' + environment.buildNumber,
           marks: [
             {
               type: 'link',
