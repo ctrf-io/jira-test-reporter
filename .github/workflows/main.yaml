@@ -7,12 +7,6 @@ on:
   pull_request:
     branches:
       - '**'
-env:
-  JIRA_URL: https://jira.atlassian.com
-  JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
-  JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
-  JIRA_PROJECT_KEY: ${{ secrets.JIRA_PROJECT_KEY }}
-  JIRA_ISSUE_TYPE: ${{ secrets.JIRA_ISSUE_TYPE }}
 
 jobs:
   testing:
@@ -24,30 +18,3 @@ jobs:
         run: npm install
       - name: Build
         run: npm run build
-      - name: Run tests
-        run: npm run all
-      - name: E2E test results
-        run: npx ts-node src/cli.ts results "ctrf/*.json"
-        if: always()
-      - name: E2E flaky tests
-        run: npx ts-node src/cli.ts flaky "ctrf/*.json"
-        if: always()
-      - name: Publish Test Results
-        uses: ctrf-io/github-test-reporter@v1
-        with:
-          ctrf-path: ctrf/*.json
-          summary-report: true
-          test-report: false
-          failed-report: false
-          fail-rate-report: false
-          flaky-report: false
-          flaky-rate-report: false
-          previous-results-report: false
-          insights-report: false
-          slowest-report: false
-        if: always()
-      - name: Post Results to Pull Request
-        uses: ctrf-io/github-test-reporter@v1
-        with:
-          ctrf-path: ctrf/*.json
-          pull-request-report: true

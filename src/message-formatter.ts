@@ -97,7 +97,7 @@ export const formatFlakyTestsMessage = (
     },
   }
 
-  if (options?.debug && options.debug === true) {
+  if (options?.debug && options.debug) {
     console.log('Jira payload (flaky tests):', JSON.stringify(payload, null, 2))
   }
 
