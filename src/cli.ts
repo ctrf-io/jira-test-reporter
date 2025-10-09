@@ -75,6 +75,11 @@ const sharedOptions = {
     type: 'boolean',
     default: false,
   },
+  tableHeaders: {
+    describe:
+      'Comma-separated list of table headers to include (tests,passed,failed,skipped,pending,other,flaky,duration)',
+    type: 'string',
+  },
 } as const
 
 const argv = yargs(hideBin(process.argv))
@@ -109,6 +114,7 @@ const argv = yargs(hideBin(process.argv))
           assignee: argv.assignee,
           priority: argv.priority,
           debug: argv.debug as boolean,
+          tableHeaders: argv.tableHeaders ? argv.tableHeaders.split(',') as any : undefined,
         }
 
         await postResultsToJira(report, options, true)
@@ -156,6 +162,7 @@ const argv = yargs(hideBin(process.argv))
           assignee: argv.assignee,
           priority: argv.priority,
           debug: argv.debug as boolean,
+          tableHeaders: argv.tableHeaders ? argv.tableHeaders.split(',') as any : undefined,
         }
 
         await postFlakyTestsToJira(report, options, true)

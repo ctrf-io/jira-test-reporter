@@ -1,6 +1,6 @@
 import { Report } from 'ctrf'
 import { type AdfDocument } from './client'
-import { type Options } from './types/reporter'
+import { type Options, type TableHeader } from './types/reporter'
 
 const baseTable = {
   type: 'table',
@@ -354,8 +354,227 @@ const createCodeBlock = (text: string, language: string = 'text') => ({
 })
 
 /**
- * Builds a dynamic ADF description using the CTRF report data
+ * Configuration for each table header
  */
+const TABLE_HEADER_CONFIG: Record<TableHeader, {
+  header: any
+  getCellValue: (ctrf: Report) => string
+}> = {
+  tests: {
+    header: {
+      type: 'tableHeader',
+      attrs: {},
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'Tests ',
+              marks: [{ type: 'strong' }],
+            },
+            {
+              type: 'emoji',
+              attrs: { shortName: ':test_tube:', id: '1f9ea' },
+            },
+            { type: 'text', text: ' ' },
+          ],
+        },
+      ],
+    },
+    getCellValue: (ctrf) => ctrf.results.summary.tests.toString(),
+  },
+  passed: {
+    header: {
+      type: 'tableHeader',
+      attrs: {},
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'Passed ',
+              marks: [{ type: 'strong' }],
+            },
+            {
+              type: 'emoji',
+              attrs: {
+                shortName: ':check_mark:',
+                id: 'atlassian-check_mark',
+                text: ':check_mark:',
+              },
+            },
+            { type: 'text', text: ' ' },
+          ],
+        },
+      ],
+    },
+    getCellValue: (ctrf) => ctrf.results.summary.passed.toString(),
+  },
+  failed: {
+    header: {
+      type: 'tableHeader',
+      attrs: {},
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'Failed ',
+              marks: [{ type: 'strong' }],
+            },
+            {
+              type: 'emoji',
+              attrs: {
+                shortName: ':cross_mark:',
+                id: 'atlassian-cross_mark',
+                text: ':cross_mark:',
+              },
+            },
+            { type: 'text', text: ' ' },
+          ],
+        },
+      ],
+    },
+    getCellValue: (ctrf) => ctrf.results.summary.failed.toString(),
+  },
+  skipped: {
+    header: {
+      type: 'tableHeader',
+      attrs: {},
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'Skip ',
+              marks: [{ type: 'strong' }],
+            },
+            {
+              type: 'emoji',
+              attrs: { shortName: ':fast_forward:', id: '23e9' },
+            },
+            { type: 'text', text: ' ' },
+          ],
+        },
+      ],
+    },
+    getCellValue: (ctrf) => ctrf.results.summary.skipped.toString(),
+  },
+  pending: {
+    header: {
+      type: 'tableHeader',
+      attrs: {},
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'Pending ',
+              marks: [{ type: 'strong' }],
+            },
+            {
+              type: 'emoji',
+              attrs: { shortName: ':hourglass_flowing_sand:', id: '23f3' },
+            },
+            { type: 'text', text: ' ' },
+          ],
+        },
+      ],
+    },
+    getCellValue: (ctrf) => ctrf.results.summary.pending.toString(),
+  },
+  other: {
+    header: {
+      type: 'tableHeader',
+      attrs: {},
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'Other',
+              marks: [{ type: 'strong' }],
+            },
+            {
+              type: 'emoji',
+              attrs: { shortName: ':question:', id: '2753' },
+            },
+            { type: 'text', text: ' ' },
+          ],
+        },
+      ],
+    },
+    getCellValue: (ctrf) => ctrf.results.summary.other.toString(),
+  },
+  flaky: {
+    header: {
+      type: 'tableHeader',
+      attrs: {},
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'Flaky ',
+              marks: [{ type: 'strong' }],
+            },
+            {
+              type: 'emoji',
+              attrs: { shortName: ':fallen_leaf:', id: '1f342' },
+            },
+            { type: 'text', text: ' ' },
+          ],
+        },
+      ],
+    },
+    getCellValue: (ctrf) =>
+      ctrf.results.tests.filter((test) => test.flaky).length.toString(),
+  },
+  duration: {
+    header: {
+      type: 'tableHeader',
+      attrs: {},
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'Duration ',
+              marks: [{ type: 'strong' }],
+            },
+            {
+              type: 'emoji',
+              attrs: { shortName: ':timer:', id: '23f2' },
+            },
+            { type: 'text', text: ' ' },
+          ],
+        },
+      ],
+    },
+    getCellValue: (ctrf) =>
+      `${Math.round((ctrf.results.summary.stop - ctrf.results.summary.start) / 1000)}s`,
+  },
+}
+
+const DEFAULT_TABLE_HEADERS: TableHeader[] = [
+  'tests',
+  'passed',
+  'failed',
+  'skipped',
+  'pending',
+  'other',
+  'flaky',
+  'duration',
+]
+
 export const buildDescription = (
   ctrf: Report,
   options?: Options
@@ -367,25 +586,35 @@ export const buildDescription = (
   const suffix = options?.suffix || ''
   const isFlaky = title.includes('Flaky Tests Detected')
 
-  const tableClone = JSON.parse(JSON.stringify(baseTable))
+  const headersToShow = options?.tableHeaders || DEFAULT_TABLE_HEADERS
 
-  const dataRow = {
+  // Build header row
+  const headerRow = {
     type: 'tableRow',
-    content: [
-      createTableCell(summary.tests.toString()),
-      createTableCell(summary.passed.toString()),
-      createTableCell(summary.failed.toString()),
-      createTableCell(summary.skipped.toString()),
-      createTableCell(summary.pending.toString()),
-      createTableCell(summary.other.toString()),
-      createTableCell(
-        results.tests.filter((test) => test.flaky).length.toString()
-      ),
-      createTableCell(`${Math.round((summary.stop - summary.start) / 1000)}s`),
-    ],
+    content: headersToShow.map(
+      (headerName) => TABLE_HEADER_CONFIG[headerName].header
+    ),
   }
 
-  tableClone.content.push(dataRow)
+  // Build data row
+  const dataRow = {
+    type: 'tableRow',
+    content: headersToShow.map((headerName) =>
+      createTableCell(TABLE_HEADER_CONFIG[headerName].getCellValue(ctrf))
+    ),
+  }
+
+  // Build the table
+  const table = {
+    type: 'table',
+    attrs: {
+      isNumberColumnEnabled: false,
+      layout: 'default',
+      localId: '79158a8a-8c3c-4b2c-915d-f3423772f4be',
+      width: 760,
+    },
+    content: [headerRow, dataRow],
+  }
 
   const content = []
 
@@ -395,7 +624,7 @@ export const buildDescription = (
 
   content.push(createHeadingNode(title, 2))
 
-  content.push(tableClone)
+  content.push(table)
 
   // Check for missing environment properties
   const missingEnvProperties = []
