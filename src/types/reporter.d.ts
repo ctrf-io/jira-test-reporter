@@ -12,6 +12,7 @@ export interface Options {
   components?: string[]
   assignee?: string
   priority?: string
+  fixVersions?: string[]
   debug?: boolean
   tableHeaders?: TableHeader[]
 }

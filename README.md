@@ -122,6 +122,7 @@ npx jira-ctrf results /path/to/ctrf-file.json --title "Custom Title" --project C
 | `components`   | Components to add to the Jira issue                                                                                        | []                     |
 | `assignee`     | Username of the person to assign the Jira issue to                                                                         | undefined              |
 | `priority`     | Priority of the Jira issue                                                                                                 | undefined              |
+| `fixVersions`  | Comma-separated list of fix versions to add to the Jira issue                                                              | []                     |
 | `tableHeaders` | Comma-separated list of table headers to include (tests,passed,failed,skipped,pending,other,flaky,duration)                | All headers            |
 | `debug`        | Enable debug mode to see the payload being sent to Jira                                                                    | false                  |
 
