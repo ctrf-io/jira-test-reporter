@@ -70,10 +70,19 @@ const sharedOptions = {
     describe: 'Priority of the Jira issue',
     type: 'string',
   },
+  fixVersions: {
+    describe: 'Comma-separated list of fix versions to add to the Jira issue',
+    type: 'string',
+  },
   debug: {
     describe: 'Enable debug mode to see the payload being sent to Jira',
     type: 'boolean',
     default: false,
+  },
+  tableHeaders: {
+    describe:
+      'Comma-separated list of table headers to include (tests,passed,failed,skipped,pending,other,flaky,duration)',
+    type: 'string',
   },
 } as const
 
@@ -108,7 +117,9 @@ const argv = yargs(hideBin(process.argv))
           components: argv.components ? argv.components.split(',') : undefined,
           assignee: argv.assignee,
           priority: argv.priority,
+          fixVersions: argv.fixVersions ? argv.fixVersions.split(',') : undefined,
           debug: argv.debug as boolean,
+          tableHeaders: argv.tableHeaders ? argv.tableHeaders.split(',') as any : undefined,
         }
 
         await postResultsToJira(report, options, true)
@@ -155,7 +166,9 @@ const argv = yargs(hideBin(process.argv))
           components: argv.components ? argv.components.split(',') : undefined,
           assignee: argv.assignee,
           priority: argv.priority,
+          fixVersions: argv.fixVersions ? argv.fixVersions.split(',') : undefined,
           debug: argv.debug as boolean,
+          tableHeaders: argv.tableHeaders ? argv.tableHeaders.split(',') as any : undefined,
         }
 
         await postFlakyTestsToJira(report, options, true)

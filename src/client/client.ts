@@ -32,6 +32,7 @@ export interface JiraIssuePayload {
     priority?: {
       name: string
     }
+    fixVersions?: Array<{ name: string }>
   }
 }
 

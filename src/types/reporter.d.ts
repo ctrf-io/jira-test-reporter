@@ -1,3 +1,5 @@
+export type TableHeader = 'tests' | 'passed' | 'failed' | 'skipped' | 'pending' | 'other' | 'flaky' | 'duration'
+
 export interface Options {
   title?: string
   prefix?: string
@@ -10,5 +12,7 @@ export interface Options {
   components?: string[]
   assignee?: string
   priority?: string
+  fixVersions?: string[]
   debug?: boolean
+  tableHeaders?: TableHeader[]
 }
