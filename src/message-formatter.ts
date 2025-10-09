@@ -51,6 +51,10 @@ export const formatResultsMessage = (
     payload.fields.priority = { name: options.priority }
   }
 
+  if (options?.fixVersions && options.fixVersions.length > 0) {
+    payload.fields.fixVersions = options.fixVersions.map((name) => ({ name }))
+  }
+
   if (options?.debug) {
     console.log('Jira payload:', JSON.stringify(payload, null, 2))
   }
@@ -94,6 +98,7 @@ export const formatFlakyTestsMessage = (
       components: options?.components?.map((name) => ({ name })),
       assignee: options?.assignee ? { name: options.assignee } : undefined,
       priority: options?.priority ? { name: options.priority } : undefined,
+      fixVersions: options?.fixVersions && options.fixVersions.length > 0 ? options.fixVersions.map((name) => ({ name })) : undefined,
     },
   }
 
