@@ -1,4 +1,4 @@
-import { Report } from 'ctrf'
+import { type Report } from 'ctrf'
 import { type AdfDocument } from './client'
 import { type Options, type TableHeader } from './types/reporter'
 
@@ -356,10 +356,13 @@ const createCodeBlock = (text: string, language: string = 'text') => ({
 /**
  * Configuration for each table header
  */
-const TABLE_HEADER_CONFIG: Record<TableHeader, {
-  header: any
-  getCellValue: (ctrf: Report) => string
-}> = {
+const TABLE_HEADER_CONFIG: Record<
+  TableHeader,
+  {
+    header: any
+    getCellValue: (ctrf: Report) => string
+  }
+> = {
   tests: {
     header: {
       type: 'tableHeader',

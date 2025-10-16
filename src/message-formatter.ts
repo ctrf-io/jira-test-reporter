@@ -1,4 +1,4 @@
-import { Report } from 'ctrf'
+import { type Report } from 'ctrf'
 import { type Options } from './types/reporter'
 import { buildDescription } from './description'
 import { type JiraIssuePayload } from './client'
@@ -98,7 +98,10 @@ export const formatFlakyTestsMessage = (
       components: options?.components?.map((name) => ({ name })),
       assignee: options?.assignee ? { name: options.assignee } : undefined,
       priority: options?.priority ? { name: options.priority } : undefined,
-      fixVersions: options?.fixVersions && options.fixVersions.length > 0 ? options.fixVersions.map((name) => ({ name })) : undefined,
+      fixVersions:
+        options?.fixVersions && options.fixVersions.length > 0
+          ? options.fixVersions.map((name) => ({ name }))
+          : undefined,
     },
   }
 

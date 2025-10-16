@@ -1,4 +1,12 @@
-export type TableHeader = 'tests' | 'passed' | 'failed' | 'skipped' | 'pending' | 'other' | 'flaky' | 'duration'
+export type TableHeader =
+  | 'tests'
+  | 'passed'
+  | 'failed'
+  | 'skipped'
+  | 'pending'
+  | 'other'
+  | 'flaky'
+  | 'duration'
 
 export interface Options {
   title?: string

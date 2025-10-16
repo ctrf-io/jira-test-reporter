@@ -117,9 +117,13 @@ const argv = yargs(hideBin(process.argv))
           components: argv.components ? argv.components.split(',') : undefined,
           assignee: argv.assignee,
           priority: argv.priority,
-          fixVersions: argv.fixVersions ? argv.fixVersions.split(',') : undefined,
+          fixVersions: argv.fixVersions
+            ? argv.fixVersions.split(',')
+            : undefined,
           debug: argv.debug as boolean,
-          tableHeaders: argv.tableHeaders ? argv.tableHeaders.split(',') as any : undefined,
+          tableHeaders: argv.tableHeaders
+            ? (argv.tableHeaders.split(',') as any)
+            : undefined,
         }
 
         await postResultsToJira(report, options, true)
@@ -166,9 +170,13 @@ const argv = yargs(hideBin(process.argv))
           components: argv.components ? argv.components.split(',') : undefined,
           assignee: argv.assignee,
           priority: argv.priority,
-          fixVersions: argv.fixVersions ? argv.fixVersions.split(',') : undefined,
+          fixVersions: argv.fixVersions
+            ? argv.fixVersions.split(',')
+            : undefined,
           debug: argv.debug as boolean,
-          tableHeaders: argv.tableHeaders ? argv.tableHeaders.split(',') as any : undefined,
+          tableHeaders: argv.tableHeaders
+            ? (argv.tableHeaders.split(',') as any)
+            : undefined,
         }
 
         await postFlakyTestsToJira(report, options, true)

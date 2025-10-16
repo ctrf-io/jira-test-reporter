@@ -1,6 +1,6 @@
 {
   "name": "jira-ctrf",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Create Jira issues with test results from popular testing frameworks",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -20,7 +20,14 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "repository": "github:ctrf-io/jira-test-reporter",
+    "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ctrf-io/jira-test-reporter.git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "homepage": "https://ctrf.io",
   "files": [
     "dist/",
