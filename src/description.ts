@@ -354,6 +354,30 @@ const createCodeBlock = (text: string, language: string = 'text') => ({
 })
 
 /**
+ * Creates a collapsible expand node with the given title and block content
+ */
+const createExpand = (title: string, content: any[]) => ({
+  type: 'expand',
+  attrs: { title },
+  content,
+})
+
+/**
+ * Creates a panel (callout box) with the given panelType and block content.
+ * Valid panelTypes: 'info' | 'note' | 'warning' | 'success' | 'error'
+ */
+const createPanel = (panelType: string, content: any[]) => ({
+  type: 'panel',
+  attrs: { panelType },
+  content,
+})
+
+/**
+ * Creates a horizontal rule (section divider)
+ */
+const createRule = () => ({ type: 'rule' })
+
+/**
  * Configuration for each table header
  */
 const TABLE_HEADER_CONFIG: Record<
@@ -644,7 +668,14 @@ export const buildDescription = (
     (environment.buildName || environment.buildNumber) &&
     environment.buildUrl
   ) {
-    // Create a linked build name/number
+    // Build a label from whichever parts are present, avoiding "undefined" strings
+    const buildLabel = [
+      environment.buildName,
+      environment.buildNumber ? '#' + environment.buildNumber : undefined,
+    ]
+      .filter(Boolean)
+      .join(' ')
+
     content.push({
       type: 'heading',
       attrs: { level: 3 },
@@ -652,7 +683,7 @@ export const buildDescription = (
         { type: 'text', text: 'Build: ' },
         {
           type: 'text',
-          text: environment.buildName + ' #' + environment.buildNumber,
+          text: buildLabel,
           marks: [
             {
               type: 'link',
@@ -683,27 +714,74 @@ export const buildDescription = (
   }
 
   if (!isFlaky && summary.failed > 0) {
+    content.push(createRule())
     content.push(createHeadingNode('Failed Tests', 3))
 
     const failedTests = results.tests.filter((test) => test.status === 'failed')
-    const failedItems = failedTests.map((test) =>
-      createBulletListItem(
-        `${test.name}${test.suite ? ` (${test.suite})` : ''}`
-      )
-    )
+    failedTests.forEach((test, index) => {
+      const rawSuite = (test as any).suite
+      const suite: string | undefined = Array.isArray(rawSuite)
+        ? (rawSuite as string[]).join(' > ')
+        : (rawSuite as string | undefined)
 
-    content.push(createBulletList(failedItems))
+      // Test name (with suite) as a sub-heading
+      content.push(
+        createHeadingNode(suite ? `${test.name} (${suite})` : test.name, 4)
+      )
+
+      // Failure message — rendered as an error panel for immediate visibility
+      if (test.message) {
+        content.push(
+          createPanel('error', [createParagraphNode([createTextNode(test.message)])])
+        )
+      }
+
+      // Stack trace — rendered inside a collapsible expand
+      if (test.trace) {
+        content.push(createExpand('Stack Trace', [createCodeBlock(test.trace)]))
+      }
+
+      // AI analysis — added by ai-ctrf, not part of the standard CTRF schema.
+      // We access it via a type assertion so the standard CtrfTest type is unchanged.
+      // The ai field is a plain string produced by ai-ctrf.
+      const ai = (test as any).ai as string | undefined
+      if (ai) {
+        content.push(
+          createExpand('AI Analysis', [createParagraphNode([createTextNode(ai)])])
+        )
+      }
+
+      // Divider between tests (not after the last one)
+      if (index < failedTests.length - 1) {
+        content.push(createRule())
+      }
+    })
   }
 
   const flakyTests = results.tests.filter((test) => test.flaky)
   if (flakyTests.length > 0) {
+    content.push(createRule())
     content.push(createHeadingNode('Flaky Tests', 3))
 
-    const flakyItems = flakyTests.map((test) =>
-      createBulletListItem(`${test.name} (${test.retries || 0} retries)`)
-    )
+    const flakyItems = flakyTests.map((test) => {
+      const rawSuite = (test as any).suite
+      const suite: string | undefined = Array.isArray(rawSuite)
+        ? (rawSuite as string[]).join(' > ')
+        : (rawSuite as string | undefined)
+      return createBulletListItem(
+        `${test.name}${suite ? ` (${suite})` : ''} — ${test.retries ?? 0} retries`
+      )
+    })
 
     content.push(createBulletList(flakyItems))
+  }
+
+  // Overall AI summary — added by ai-ctrf in results.extra.ai
+  const overallAi = (results as any).extra?.ai as string | undefined
+  if (overallAi) {
+    content.push(createRule())
+    content.push(createHeadingNode('AI Summary', 3))
+    content.push(createParagraphNode([createTextNode(overallAi)]))
   }
 
   if (suffix) {
