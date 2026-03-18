@@ -74,6 +74,11 @@ const sharedOptions = {
     describe: 'Comma-separated list of fix versions to add to the Jira issue',
     type: 'string',
   },
+  affectsVersions: {
+    describe:
+      'Comma-separated list of affects versions to add to the Jira issue (required for Bug issue type in some Jira projects)',
+    type: 'string',
+  },
   debug: {
     describe: 'Enable debug mode to see the payload being sent to Jira',
     type: 'boolean',
@@ -119,6 +124,9 @@ const argv = yargs(hideBin(process.argv))
           priority: argv.priority,
           fixVersions: argv.fixVersions
             ? argv.fixVersions.split(',')
+            : undefined,
+          affectsVersions: argv.affectsVersions
+            ? argv.affectsVersions.split(',')
             : undefined,
           debug: argv.debug as boolean,
           tableHeaders: argv.tableHeaders
@@ -172,6 +180,9 @@ const argv = yargs(hideBin(process.argv))
           priority: argv.priority,
           fixVersions: argv.fixVersions
             ? argv.fixVersions.split(',')
+            : undefined,
+          affectsVersions: argv.affectsVersions
+            ? argv.affectsVersions.split(',')
             : undefined,
           debug: argv.debug as boolean,
           tableHeaders: argv.tableHeaders
