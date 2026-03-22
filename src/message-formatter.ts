@@ -1,10 +1,10 @@
-import { type Report } from 'ctrf'
+import { type CTRFReport } from 'ctrf'
 import { type Options } from './types/reporter'
 import { buildDescription } from './description'
 import { type JiraIssuePayload } from './client'
 
 export const formatResultsMessage = (
-  ctrf: Report,
+  ctrf: CTRFReport,
   options?: Options
 ): JiraIssuePayload => {
   const { results } = ctrf
@@ -74,7 +74,7 @@ export const formatResultsMessage = (
 }
 
 export const formatFlakyTestsMessage = (
-  ctrf: Report,
+  ctrf: CTRFReport,
   options?: Options
 ): JiraIssuePayload | null => {
   const { results } = ctrf

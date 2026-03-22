@@ -1,4 +1,4 @@
-import { type Report } from 'ctrf'
+import { type CTRFReport } from 'ctrf'
 import { type AdfDocument } from './client'
 import { type Options, type TableHeader } from './types/reporter'
 
@@ -384,7 +384,7 @@ const TABLE_HEADER_CONFIG: Record<
   TableHeader,
   {
     header: any
-    getCellValue: (ctrf: Report) => string
+    getCellValue: (ctrf: CTRFReport) => string
   }
 > = {
   tests: {
@@ -603,7 +603,7 @@ const DEFAULT_TABLE_HEADERS: TableHeader[] = [
 ]
 
 export const buildDescription = (
-  ctrf: Report,
+  ctrf: CTRFReport,
   options?: Options
 ): AdfDocument => {
   const { results } = ctrf
