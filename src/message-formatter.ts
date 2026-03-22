@@ -62,6 +62,10 @@ export const formatResultsMessage = (
     payload.fields.fixVersions = options.fixVersions.map((name) => ({ name }))
   }
 
+  if (options?.affectsVersions && options.affectsVersions.length > 0) {
+    payload.fields.versions = options.affectsVersions.map((name) => ({ name }))
+  }
+
   if (options?.debug) {
     console.log('Jira payload:', JSON.stringify(payload, null, 2))
   }
@@ -108,6 +112,10 @@ export const formatFlakyTestsMessage = (
       fixVersions:
         options?.fixVersions && options.fixVersions.length > 0
           ? options.fixVersions.map((name) => ({ name }))
+          : undefined,
+      versions:
+        options?.affectsVersions && options.affectsVersions.length > 0
+          ? options.affectsVersions.map((name) => ({ name }))
           : undefined,
     },
   }

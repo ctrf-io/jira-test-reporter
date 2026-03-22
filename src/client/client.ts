@@ -33,6 +33,7 @@ export interface JiraIssuePayload {
       name: string
     }
     fixVersions?: Array<{ name: string }>
+    versions?: Array<{ name: string }>
   }
 }
 

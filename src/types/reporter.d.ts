@@ -21,6 +21,7 @@ export interface Options {
   assignee?: string
   priority?: string
   fixVersions?: string[]
+  affectsVersions?: string[]
   debug?: boolean
   tableHeaders?: TableHeader[]
   updateCtrf?: boolean
