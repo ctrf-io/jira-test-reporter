@@ -24,12 +24,19 @@ export const formatResultsMessage = (
 
   const description = buildDescription(ctrf, options)
 
+  // Append build name/number to the summary line when available in the CTRF environment block
+  const env = results.environment
+  const buildInfo =
+    env?.buildName != null
+      ? ` — ${env.buildName}${env.buildNumber != null ? ' #' + env.buildNumber : ''}`
+      : ''
+
   const payload: JiraIssuePayload = {
     fields: {
       project: {
         key: projectKey,
       },
-      summary: `${title}: ${summary.failed} failed, ${summary.passed} passed, ${summary.tests} total`,
+      summary: `${title}${buildInfo}: ${summary.failed} failed, ${summary.passed} passed, ${summary.tests} total`,
       description,
       issuetype: issueTypeId ? { id: issueTypeId } : { name: issueType },
     },
