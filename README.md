@@ -56,6 +56,51 @@ You might want to store these as secrets in your CI environment.
 - `project`: The Jira project key.
 - `issueTypeId`: The Jira issue type. [More info](https://confluence.atlassian.com/jirasoftwarecloud/finding-the-issue-type-id-in-jira-cloud-1333825937.html)
 
+## Installation
+
+### Global installation
+
+Install `jira-ctrf` globally:
+
+```sh
+pnpm add -g jira-ctrf
+```
+
+Or with npm:
+
+```sh
+npm install -g jira-ctrf
+```
+
+Then run:
+
+```sh
+jira-ctrf results ./ctrf-report.json --project CCS --issueTypeId 10000
+```
+
+### Ephemeral execution
+
+Use your package manager's executable runner:
+
+```sh
+pnpm dlx jira-ctrf@0.0.8 results ./ctrf-report.json --project CCS --issueTypeId 10000
+```
+
+Or with npm:
+
+```sh
+npx jira-ctrf@0.0.8 results ./ctrf-report.json --project CCS --issueTypeId 10000
+```
+
+> [!NOTE]
+> For ephemeral execution, it is recommended to pin the package version (for example, `jira-ctrf@0.0.8`).
+
+> [!TIP]
+> Ephemeral execution works well with other non-Node.js projects. No local installation is required—only Node.js and a supported package manager.
+
+> [!TIP]
+> If you're using a Node.js project, consider installing `jira-ctrf` as a development dependency instead. This can be executed with `pnpm exec` or `npm exec`.
+
 ## Usage
 
 You can use a glob pattern or a single file path to send the test results summary to Jira.
@@ -65,13 +110,13 @@ You can use a glob pattern or a single file path to send the test results summar
 To send the test results summary to Jira:
 
 ```sh
-npx jira-ctrf results /path/to/ctrf-report.json --project CCS --issueTypeId 10000
+jira-ctrf results /path/to/ctrf-report.json --project CCS --issueTypeId 10000
 ```
 
 You can use a glob pattern with multiple files which will be merged together:
 
 ```sh
-npx jira-ctrf results "ctrf/*.json" --project CCS --issueTypeId 10000
+jira-ctrf results "ctrf/*.json" --project CCS --issueTypeId 10000
 ```
 
 ### Flaky
@@ -79,7 +124,7 @@ npx jira-ctrf results "ctrf/*.json" --project CCS --issueTypeId 10000
 To send flaky test report to Jira:
 
 ```sh
-npx jira-ctrf flaky /path/to/ctrf-report.json --project CCS --issueTypeId 10000
+jira-ctrf flaky /path/to/ctrf-report.json --project CCS --issueTypeId 10000
 ```
 
 ### Send Only on Failures
@@ -87,7 +132,7 @@ npx jira-ctrf flaky /path/to/ctrf-report.json --project CCS --issueTypeId 10000
 To send the test results summary to Jira only if there are failed tests, use the `--onFailOnly` option:
 
 ```sh
-npx jira-ctrf results /path/to/ctrf-file.json --onFailOnly --project CCS --issueTypeId 10000
+jira-ctrf results /path/to/ctrf-file.json --onFailOnly --project CCS --issueTypeId 10000
 ```
 
 ### Custom Notification Title
@@ -95,7 +140,7 @@ npx jira-ctrf results /path/to/ctrf-file.json --onFailOnly --project CCS --issue
 You can choose a custom title for your notification, use the `--title` option:
 
 ```sh
-npx jira-ctrf results /path/to/ctrf-file.json --title "Custom Title" --project CCS --issueTypeId 10000
+jira-ctrf results /path/to/ctrf-file.json --title "Custom Title" --project CCS --issueTypeId 10000
 ```
 
 ## Options
@@ -125,7 +170,7 @@ Otherwise, the [ctrf-cli](https://github.com/ctrf-io/ctrf-cli) package provides 
 After executing your tests, use the following command:
 
 ```sh
-npx ctrf merge <directory>
+ctrf-cli merge <directory>
 ```
 
 Replace directory with the path to the directory containing the CTRF reports you want to merge.
@@ -133,6 +178,12 @@ Replace directory with the path to the directory containing the CTRF reports you
 ## Programmatic Usage
 
 You can use the package programmatically to send notifications to Jira. To install the package, run:
+
+```sh
+pnpm add jira-ctrf
+```
+
+Or with npm:
 
 ```sh
 npm install jira-ctrf
