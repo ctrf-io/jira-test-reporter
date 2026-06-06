@@ -6,30 +6,20 @@ A Jira test reporting tool that supports all major testing frameworks.
 Generate, publish and alert your team with detailed test results, including
 summaries, in-depth reports, failed test analyses, flaky test detection directly to your chosen Jira project.
 
-<div align="center">
-<div style="padding: 1.5rem; border-radius: 8px; margin: 1rem 0; border: 1px solid #30363d;">
-<span style="font-size: 23px;">💚</span>
-<h3 style="margin: 1rem 0;">CTRF tooling is open source and free to use</h3>
-<p style="font-size: 16px;">You can support the project with a follow and a star</p>
+## CTRF Open Standard
 
-<div style="margin-top: 1.5rem;">
-<a href="https://github.com/ctrf-io/jira-test-reporter">
-<img src="https://img.shields.io/github/stars/ctrf-io/jira-test-reporter?style=for-the-badge&color=2ea043" alt="GitHub stars">
-</a>
-<a href="https://github.com/ctrf-io">
-<img src="https://img.shields.io/github/followers/ctrf-io?style=for-the-badge&color=2ea043" alt="GitHub followers">
-</a>
-</div>
-</div>
+CTRF is a community-driven open standard for test reporting.
 
-<p style="font-size: 14px; margin: 1rem 0;">
+By standardizing test results, reports can be validated, merged, compared, and analyzed consistently across languages and frameworks.
 
-Contributions are very welcome! <br/>
-Explore more <a href="https://www.ctrf.io/integrations">integrations</a> <br/>
-<a href="https://app.formbricks.com/s/cmefs524mhlh1tl01gkpvefrb">Let us know your thoughts</a>.
+- **CTRF Specification**: https://github.com/ctrf-io/ctrf  
+  The official specification defining the format and semantics
+- **Discussions**: https://github.com/orgs/ctrf-io/discussions  
+  Community forum for questions, ideas, and support
 
-</p>
-</div>
+> [!NOTE]  
+> ⭐ Starring the **CTRF specification repository** (https://github.com/ctrf-io/ctrf)
+> helps support the standard.
 
 ## Features
 
@@ -110,21 +100,21 @@ npx jira-ctrf results /path/to/ctrf-file.json --title "Custom Title" --project C
 
 ## Options
 
-| Option         | Description                                                                                                                | Default                |
-| -------------- | -------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
-| `title`        | Custom title for the Jira issue                                                                                            | "Test Results Summary" |
-| `prefix`       | Text to add before the test results                                                                                        | ""                     |
-| `suffix`       | Text to add after the test results                                                                                         | ""                     |
-| `onFailOnly`   | Only create Jira issues when tests fail                                                                                    | false                  |
-| `project`      | Jira project key                                                                                                           | ""                     |
-| `issueTypeId`  | Jira issue type ID                                                                                                         | undefined              |
-| `labels`       | Labels to add to the Jira issue                                                                                            | []                     |
-| `components`   | Components to add to the Jira issue                                                                                        | []                     |
-| `assignee`     | Username of the person to assign the Jira issue to                                                                         | undefined              |
-| `priority`     | Priority of the Jira issue                                                                                                 | undefined              |
-| `fixVersions`  | Comma-separated list of fix versions to add to the Jira issue                                                              | []                     |
-| `tableHeaders` | Comma-separated list of table headers to include (tests,passed,failed,skipped,pending,other,flaky,duration)                | All headers            |
-| `debug`        | Enable debug mode to see the payload being sent to Jira                                                                    | false                  |
+| Option         | Description                                                                                                 | Default                |
+| -------------- | ----------------------------------------------------------------------------------------------------------- | ---------------------- |
+| `title`        | Custom title for the Jira issue                                                                             | "Test Results Summary" |
+| `prefix`       | Text to add before the test results                                                                         | ""                     |
+| `suffix`       | Text to add after the test results                                                                          | ""                     |
+| `onFailOnly`   | Only create Jira issues when tests fail                                                                     | false                  |
+| `project`      | Jira project key                                                                                            | ""                     |
+| `issueTypeId`  | Jira issue type ID                                                                                          | undefined              |
+| `labels`       | Labels to add to the Jira issue                                                                             | []                     |
+| `components`   | Components to add to the Jira issue                                                                         | []                     |
+| `assignee`     | Username of the person to assign the Jira issue to                                                          | undefined              |
+| `priority`     | Priority of the Jira issue                                                                                  | undefined              |
+| `fixVersions`  | Comma-separated list of fix versions to add to the Jira issue                                               | []                     |
+| `tableHeaders` | Comma-separated list of table headers to include (tests,passed,failed,skipped,pending,other,flaky,duration) | All headers            |
+| `debug`        | Enable debug mode to see the payload being sent to Jira                                                     | false                  |
 
 ## Merge reports
 
