@@ -6,30 +6,20 @@ A Jira test reporting tool that supports all major testing frameworks.
 Generate, publish and alert your team with detailed test results, including
 summaries, in-depth reports, failed test analyses, flaky test detection directly to your chosen Jira project.
 
-<div align="center">
-<div style="padding: 1.5rem; border-radius: 8px; margin: 1rem 0; border: 1px solid #30363d;">
-<span style="font-size: 23px;">💚</span>
-<h3 style="margin: 1rem 0;">CTRF tooling is open source and free to use</h3>
-<p style="font-size: 16px;">You can support the project with a follow and a star</p>
+## CTRF Open Standard
 
-<div style="margin-top: 1.5rem;">
-<a href="https://github.com/ctrf-io/jira-test-reporter">
-<img src="https://img.shields.io/github/stars/ctrf-io/jira-test-reporter?style=for-the-badge&color=2ea043" alt="GitHub stars">
-</a>
-<a href="https://github.com/ctrf-io">
-<img src="https://img.shields.io/github/followers/ctrf-io?style=for-the-badge&color=2ea043" alt="GitHub followers">
-</a>
-</div>
-</div>
+CTRF is a community-driven open standard for test reporting.
 
-<p style="font-size: 14px; margin: 1rem 0;">
+By standardizing test results, reports can be validated, merged, compared, and analyzed consistently across languages and frameworks.
 
-Contributions are very welcome! <br/>
-Explore more <a href="https://www.ctrf.io/integrations">integrations</a> <br/>
-<a href="https://app.formbricks.com/s/cmefs524mhlh1tl01gkpvefrb">Let us know your thoughts</a>.
+- **CTRF Specification**: https://github.com/ctrf-io/ctrf  
+  The official specification defining the format and semantics
+- **Discussions**: https://github.com/orgs/ctrf-io/discussions  
+  Community forum for questions, ideas, and support
 
-</p>
-</div>
+> [!NOTE]  
+> ⭐ Starring the **CTRF specification repository** (https://github.com/ctrf-io/ctrf)
+> helps support the standard.
 
 ## Features
 
@@ -66,6 +56,51 @@ You might want to store these as secrets in your CI environment.
 - `project`: The Jira project key.
 - `issueTypeId`: The Jira issue type. [More info](https://confluence.atlassian.com/jirasoftwarecloud/finding-the-issue-type-id-in-jira-cloud-1333825937.html)
 
+## Installation
+
+### Global installation
+
+Install `jira-ctrf` globally:
+
+```sh
+pnpm add -g jira-ctrf
+```
+
+Or with npm:
+
+```sh
+npm install -g jira-ctrf
+```
+
+Then run:
+
+```sh
+jira-ctrf results ./ctrf-report.json --project CCS --issueTypeId 10000
+```
+
+### Ephemeral execution
+
+Use your package manager's executable runner:
+
+```sh
+pnpm dlx jira-ctrf@0.0.8 results ./ctrf-report.json --project CCS --issueTypeId 10000
+```
+
+Or with npm:
+
+```sh
+npx jira-ctrf@0.0.8 results ./ctrf-report.json --project CCS --issueTypeId 10000
+```
+
+> [!NOTE]
+> For ephemeral execution, it is recommended to pin the package version (for example, `jira-ctrf@0.0.8`).
+
+> [!TIP]
+> Ephemeral execution works well with other non-Node.js projects. No local installation is required—only Node.js and a supported package manager.
+
+> [!TIP]
+> If you're using a Node.js project, consider installing `jira-ctrf` as a development dependency instead. This can be executed with `pnpm exec` or `npm exec`.
+
 ## Usage
 
 You can use a glob pattern or a single file path to send the test results summary to Jira.
@@ -75,13 +110,13 @@ You can use a glob pattern or a single file path to send the test results summar
 To send the test results summary to Jira:
 
 ```sh
-npx jira-ctrf results /path/to/ctrf-report.json --project CCS --issueTypeId 10000
+jira-ctrf results /path/to/ctrf-report.json --project CCS --issueTypeId 10000
 ```
 
 You can use a glob pattern with multiple files which will be merged together:
 
 ```sh
-npx jira-ctrf results "ctrf/*.json" --project CCS --issueTypeId 10000
+jira-ctrf results "ctrf/*.json" --project CCS --issueTypeId 10000
 ```
 
 ### Flaky
@@ -89,7 +124,7 @@ npx jira-ctrf results "ctrf/*.json" --project CCS --issueTypeId 10000
 To send flaky test report to Jira:
 
 ```sh
-npx jira-ctrf flaky /path/to/ctrf-report.json --project CCS --issueTypeId 10000
+jira-ctrf flaky /path/to/ctrf-report.json --project CCS --issueTypeId 10000
 ```
 
 ### Send Only on Failures
@@ -97,7 +132,7 @@ npx jira-ctrf flaky /path/to/ctrf-report.json --project CCS --issueTypeId 10000
 To send the test results summary to Jira only if there are failed tests, use the `--onFailOnly` option:
 
 ```sh
-npx jira-ctrf results /path/to/ctrf-file.json --onFailOnly --project CCS --issueTypeId 10000
+jira-ctrf results /path/to/ctrf-file.json --onFailOnly --project CCS --issueTypeId 10000
 ```
 
 ### Custom Notification Title
@@ -105,26 +140,26 @@ npx jira-ctrf results /path/to/ctrf-file.json --onFailOnly --project CCS --issue
 You can choose a custom title for your notification, use the `--title` option:
 
 ```sh
-npx jira-ctrf results /path/to/ctrf-file.json --title "Custom Title" --project CCS --issueTypeId 10000
+jira-ctrf results /path/to/ctrf-file.json --title "Custom Title" --project CCS --issueTypeId 10000
 ```
 
 ## Options
 
-| Option         | Description                                                                                                                | Default                |
-| -------------- | -------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
-| `title`        | Custom title for the Jira issue                                                                                            | "Test Results Summary" |
-| `prefix`       | Text to add before the test results                                                                                        | ""                     |
-| `suffix`       | Text to add after the test results                                                                                         | ""                     |
-| `onFailOnly`   | Only create Jira issues when tests fail                                                                                    | false                  |
-| `project`      | Jira project key                                                                                                           | ""                     |
-| `issueTypeId`  | Jira issue type ID                                                                                                         | undefined              |
-| `labels`       | Labels to add to the Jira issue                                                                                            | []                     |
-| `components`   | Components to add to the Jira issue                                                                                        | []                     |
-| `assignee`     | Username of the person to assign the Jira issue to                                                                         | undefined              |
-| `priority`     | Priority of the Jira issue                                                                                                 | undefined              |
-| `fixVersions`  | Comma-separated list of fix versions to add to the Jira issue                                                              | []                     |
-| `tableHeaders` | Comma-separated list of table headers to include (tests,passed,failed,skipped,pending,other,flaky,duration)                | All headers            |
-| `debug`        | Enable debug mode to see the payload being sent to Jira                                                                    | false                  |
+| Option         | Description                                                                                                 | Default                |
+| -------------- | ----------------------------------------------------------------------------------------------------------- | ---------------------- |
+| `title`        | Custom title for the Jira issue                                                                             | "Test Results Summary" |
+| `prefix`       | Text to add before the test results                                                                         | ""                     |
+| `suffix`       | Text to add after the test results                                                                          | ""                     |
+| `onFailOnly`   | Only create Jira issues when tests fail                                                                     | false                  |
+| `project`      | Jira project key                                                                                            | ""                     |
+| `issueTypeId`  | Jira issue type ID                                                                                          | undefined              |
+| `labels`       | Labels to add to the Jira issue                                                                             | []                     |
+| `components`   | Components to add to the Jira issue                                                                         | []                     |
+| `assignee`     | Username of the person to assign the Jira issue to                                                          | undefined              |
+| `priority`     | Priority of the Jira issue                                                                                  | undefined              |
+| `fixVersions`  | Comma-separated list of fix versions to add to the Jira issue                                               | []                     |
+| `tableHeaders` | Comma-separated list of table headers to include (tests,passed,failed,skipped,pending,other,flaky,duration) | All headers            |
+| `debug`        | Enable debug mode to see the payload being sent to Jira                                                     | false                  |
 
 ## Merge reports
 
@@ -135,7 +170,7 @@ Otherwise, the [ctrf-cli](https://github.com/ctrf-io/ctrf-cli) package provides 
 After executing your tests, use the following command:
 
 ```sh
-npx ctrf merge <directory>
+ctrf-cli merge <directory>
 ```
 
 Replace directory with the path to the directory containing the CTRF reports you want to merge.
@@ -143,6 +178,12 @@ Replace directory with the path to the directory containing the CTRF reports you
 ## Programmatic Usage
 
 You can use the package programmatically to send notifications to Jira. To install the package, run:
+
+```sh
+pnpm add jira-ctrf
+```
+
+Or with npm:
 
 ```sh
 npm install jira-ctrf
