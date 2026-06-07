@@ -1,4 +1,4 @@
-import { postResultsToJira } from './jira-reporter'
-import { type Options } from './types/reporter'
+import { postResultsToJira } from "./jira-reporter";
+import type { Options } from "./types/reporter";
 
-export { postResultsToJira, type Options }
+export { postResultsToJira, type Options };
