@@ -40,7 +40,7 @@
 	"author": "Matthew Poulton-White",
 	"license": "MIT",
 	"dependencies": {
-		"ctrf": "0.2.0",
+		"ctrf": "0.2.1",
 		"glob": "13.0.6",
 		"yargs": "18.0.0"
 	},
