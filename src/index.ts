@@ -1,4 +1,13 @@
-import { postResultsToJira } from "./jira-reporter";
+import { postFlakyTestsToJira, postResultsToJira } from "./jira-reporter";
 import type { Options } from "./types/reporter";
 
-export { postResultsToJira, type Options };
+const sendTestResultsToJira = postResultsToJira;
+const sendFlakyResultsToJira = postFlakyTestsToJira;
+
+export {
+	postFlakyTestsToJira,
+	postResultsToJira,
+	sendFlakyResultsToJira,
+	sendTestResultsToJira,
+	type Options,
+};
