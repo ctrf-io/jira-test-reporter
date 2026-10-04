@@ -1,6 +1,6 @@
 {
 	"name": "jira-ctrf",
-	"version": "0.0.9-next.0",
+	"version": "0.0.9-next.1",
 	"description": "Create Jira issues with test results from popular testing frameworks",
 	"type": "module",
 	"main": "./dist/index.js",
