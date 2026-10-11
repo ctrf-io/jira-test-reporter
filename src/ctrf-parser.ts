@@ -27,6 +27,17 @@ export function parseCtrfFile(pattern: string): CTRFReport {
 	}
 
 	const report: CTRFReport = reports.length > 1 ? merge(reports) : reports[0];
+	if (
+		reports.length > 1 &&
+		report.results.environment &&
+		!reports.every(
+			(source) =>
+				source.results.environment?.shardId ===
+				reports[0].results.environment?.shardId,
+		)
+	) {
+		delete report.results.environment.shardId;
+	}
 	console.log(`Read ${reports.length} CTRF reports`);
 	return report;
 }
