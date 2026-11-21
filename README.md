@@ -195,9 +195,9 @@ The package exports the following functions:
 - `sendFlakyResultsToJira`
 
 ```ts
-import { sendTestResultsToJira } from 'jira-ctrf'
+import { sendTestResultsToJira } from "jira-ctrf";
 
-sendTestResultsToJira(report)
+sendTestResultsToJira(report);
 ```
 
 ## What is CTRF?
